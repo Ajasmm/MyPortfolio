@@ -450,27 +450,27 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label for="name">Name</label>
-                  <input type="text" name="Name" class="form-control" id="name" required>
+                  <input type="text" name="Name" class="form-control" id="name">
                 </div>
                 <div class="form-group col-md-6">
                   <label for="name">Email</label>
-                  <input type="email" class="form-control" name="Email" id="email" required>
+                  <input type="text" class="form-control" name="Email" id="email">
                 </div>
               </div>
               <div class="form-group">
                 <label for="name">Subject</label>
-                <input type="text" class="form-control" name="Subject" id="subject" required>
+                <input type="text" class="form-control" name="Subject" id="subject">
               </div>
               <div class="form-group">
                 <label for="name">Description</label>
-                <textarea class="form-control" name="Description" rows="10" required></textarea>
+                <textarea class="form-control" name="Description" id="description" rows="10"></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+                <div id="loading-msg" class="loading">Senting....</div>
+                <div id="error-msg" class="error-message"></div>
+                <div id="send-message" class="sent-message">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit" value="send">Send Message</button></div>
+              <div class="text-center"><button type="submit" value="">Send Message</button></div>
             </form>
           </div>
 
@@ -508,24 +508,114 @@
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/typed.js/typed.min.js"></script>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
   <script>
     $("#portfolio-site").submit((e)=>{
+      
+      e.preventDefault();
+
+      const info = document.getElementById("loading-msg");
+      const success_msg = document.getElementById("send-message");
+      const error = document.getElementById("error-msg");
+
+      info.style.display = 'none';
+      error.style.display = 'none';
+      success_msg.style.display = 'none';
+
+
+      info.innerHTML = "validating";
+      info.style.display = 'block';
+
+
+      let name, email, subject, desc;
+
+
+      /////////////////////////////////////////////////////////        Validate Name        /////////////////////////////////////////
+      name = document.getElementById("name").value;
+
+      if(name == null || name.length < 1){
+        error.style.display = 'block';
+        error.innerHTML = "Enter a name"
+      info.style.display = 'none';
+        return;
+      }
+      else{
+        error.style.display = 'none';
+      }
+
+
+      //////////////////////////////////////////////////////////        Validate Email      ///////////////////////////////////////////
+      email = document.getElementById("email").value;
+      
+      if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+      {
+        error.style.display = 'none'
+      }else{
+        error.style.display = 'block';
+        error.innerHTML = "Enter a valid email"
+      info.style.display = 'none';
+        return
+      }
+      /////////////////////////////////////////////////////////         Validate Subject      //////////////////////////////////////////
+      subject = document.getElementById("subject").value;
+      if(subject.length == 0){
+        error.style.display = 'block';
+        error.innerHTML = "Enter subject";
+      info.style.display = 'none';
+        return;
+      }
+      if(subject.length < 4){
+        error.style.display = 'block';
+        error.innerHTML = "Enter a minimum of 4 character in subject";
+      info.style.display = 'none';
+        return;
+      }
+      else{
+        error.style.display = 'none';
+      }
+
+      ///////////////////////////////////////////////////////////       Validate Desciption     /////////////////////////////////////////
+      desc = document.getElementById("description").value;
+      if(desc.length == 0){
+        error.style.display = "block"
+        error.innerHTML = "Enter Description"
+        info.style.display = 'none';
+        return;
+      }
+      else if(desc.length < 8){
+        error.style.display = "block"
+        error.innerHTML = "Enter minimum of 8 character in description"
+        info.style.display = 'none';
+        return;
+      }else{
+        error.style.display = 'none';
+      }
+
+      info.innerHTML = "Sending.....";
+
         e.preventDefault()
         $.ajax({
             url:"https://script.google.com/macros/s/AKfycbxuNfL-BX7jfsaDOnxhU5nhA-6lEs1lbT2mZfWjuo3N9ALRW2bJsBMCmos6L0Ensd-Q/exec",
             data:$("#portfolio-site").serialize(),
             method:"post",
             success:function (response){
-                alert("Form submitted successfully")
-                window.location.reload()
+                info.style.display = 'none';
+                success_msg.style.display = 'block'
+                
+                name.innerHTML = "";
+                email.innerHTML = "";
+                subject.innerHTML = "";
+                desc.innerHTML = "";
+
                 //window.location.href="https://google.com"
             },
             error:function (err){
-                alert("Something Error")
+              info.style.display = 'none'
+              error.style.display = 'block'
+              error.innerHTML = "Something went wrong";
 
             }
         })
+        
     })
 </script>
 
