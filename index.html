@@ -530,7 +530,7 @@
 
 
       /////////////////////////////////////////////////////////        Validate Name        /////////////////////////////////////////
-      name = document.getElementById("name").value;
+      name = $.trim(document.getElementById("name").value);
 
       if(name == null || name.length < 1){
         error.style.display = 'block';
@@ -544,7 +544,7 @@
 
 
       //////////////////////////////////////////////////////////        Validate Email      ///////////////////////////////////////////
-      email = document.getElementById("email").value;
+      email = $.trim(document.getElementById("email").value);
       
       if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
       {
@@ -556,7 +556,7 @@
         return
       }
       /////////////////////////////////////////////////////////         Validate Subject      //////////////////////////////////////////
-      subject = document.getElementById("subject").value;
+      subject = $.trim(document.getElementById("subject").value);
       if(subject.length == 0){
         error.style.display = 'block';
         error.innerHTML = "Enter subject";
@@ -574,7 +574,7 @@
       }
 
       ///////////////////////////////////////////////////////////       Validate Desciption     /////////////////////////////////////////
-      desc = document.getElementById("description").value;
+      desc = $.trim(document.getElementById("description").value);
       if(desc.length == 0){
         error.style.display = "block"
         error.innerHTML = "Enter Description"
@@ -601,10 +601,10 @@
                 info.style.display = 'none';
                 success_msg.style.display = 'block'
                 
-                name.innerHTML = "";
-                email.innerHTML = "";
-                subject.innerHTML = "";
-                desc.innerHTML = "";
+                $("#name").val("")
+                $("#email").val("")
+                $("#subject").val("")
+                $("#description").val("")
 
                 //window.location.href="https://google.com"
             },
